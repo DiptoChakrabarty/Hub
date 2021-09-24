@@ -47,7 +47,7 @@ jobs:
           BUGGER_OFF: "true"
 
       - name: "Run tests"
-        if: ${matrix.os} != "windows-latest"
+        if: ${{ matrix.os }} != "windows-latest"
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.secrets/gcs.json
           python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
