@@ -18,9 +18,11 @@ jobs:
 
       matrix:
         python-version:
+          - 3.6
           - 3.8
         os:
           - ubuntu-latest
+          - windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -29,3 +31,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: "Collect requirements"
+        run: |
+          pip3 install --upgrade pip --user
+          pip3 install --upgrade setuptools
+          pip3 install -r hub/requirements/tests.txt
+          <<# parameters.plugins >>pip3 install -r hub/requirements/plugins.txt<</ parameters.plugins >>
+          pip3 install -r hub/requirements/common.txt
+          git clone https://github.com/activeloopai/buH.git
+          pip3 install -e buH
+          sh buH/buh/scripts/create_all.sh
+          pip3 install -e .
+        env:
+          BUGGER_OFF: "true"
