@@ -52,7 +52,7 @@ jobs:
       - name: Test GCP credentials validity
         run: gcloud info
 
-      - name: Test GCP credentials
+      - name: Test GCP credentials file
         run: ls -lsa ${{ GITHUB_WORKSPACE }}
 
       - name: "Collect requirements"
