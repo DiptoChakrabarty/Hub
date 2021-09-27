@@ -74,3 +74,4 @@ jobs:
           python3 -m pytest hub/api/tests/test_api.py --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
         env:
           ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
+          ACTIVELOOP_HUB_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
