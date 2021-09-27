@@ -70,8 +70,8 @@ jobs:
       - name: "Run tests"
         if: ${{ matrix.os }} != "windows-latest"
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/gcs.json
           python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
         env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcs.json
           ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
           ACTIVELOOP_HUB_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
