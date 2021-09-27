@@ -42,19 +42,18 @@ jobs:
       - name: Test AWS credentials validity
         run: aws sts get-caller-identity
 
-      - name: Create GCP config file
-        run: touch $HOME/gcs.json
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-          credentials_file_path: $HOME/gcs.json
 
       - name: Test GCP credentials validity
         run: gcloud info
+
+      - name: Test GCP credentials validity
+        run: ls -lsa ${{ GITHUB_WORKSPACE }}
 
       - name: "Collect requirements"
         run: |
