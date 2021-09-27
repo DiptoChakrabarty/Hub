@@ -72,3 +72,5 @@ jobs:
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=${{ env.GITHUB_WORKSPACE }}/gcs.json
           python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
+        env:
+          ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
