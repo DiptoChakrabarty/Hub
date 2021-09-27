@@ -43,7 +43,7 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Create GCP config file
-        run: touch ${{ env.GITHUB_WORKSPACE }}/gcs.json
+        run: touch $HOME/gcs.json
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
@@ -51,7 +51,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-          credentials_file_path: ${{ env.GITHUB_WORKSPACE }}/gcs.json
+          credentials_file_path: $HOME/gcs.json
 
       - name: Test GCP credentials validity
         run: gcloud info
@@ -73,5 +73,5 @@ jobs:
       - name: "Run tests"
         if: ${{ matrix.os }} != "windows-latest"
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=${{ env.GITHUB_WORKSPACE }}/gcs.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcs.json
           python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
