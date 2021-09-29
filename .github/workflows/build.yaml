@@ -67,10 +67,14 @@ jobs:
         env:
           BUGGER_OFF: "true"
 
-      - name: "Run tests"
-        if: ${{ matrix.os }} != "windows-latest"
+      - name: "Set aliases for Windows"
         run: |
-          python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
+          Add-Content -Path $profile -Value {Set-Alias -Name python3 -Value python}
+          Add-Content -Path $profile -Value {Set-Alias -Name pip3 -Value pip}
+
+      - name: "Run tests"
+        run: |
+          python3 -m pytest hub/auto/tests/test_kaggle.py --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcs.json
           ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
