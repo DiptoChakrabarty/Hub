@@ -67,9 +67,10 @@ jobs:
         env:
           BUGGER_OFF: "true"
 
-      - name: "Run complex tests"
+        # --cov-report=xml --cov=./
+      - name: "Run tests"
         run: |
-          python3 -m pytest --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
+          python3 -m pytest hub/auto/tests/test_kaggle.py --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcs.json
           ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
