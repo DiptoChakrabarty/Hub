@@ -67,7 +67,7 @@ jobs:
         env:
           BUGGER_OFF: "true"
 
-        # --cov-report=xml --cov=./
+      # --cov-report=xml --cov=./
       - name: "Run tests"
         run: |
           python3 -m pytest hub/auto/tests/test_kaggle.py --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
