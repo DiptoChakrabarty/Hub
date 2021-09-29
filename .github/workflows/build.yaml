@@ -32,52 +32,47 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      # - name: Test AWS credentials validity
-      #   run: aws sts get-caller-identity
+      - name: Test AWS credentials validity
+        run: aws sts get-caller-identity
 
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@master
-      #   with:
-      #     project_id: ${{ secrets.GCP_PROJECT_ID }}
-      #     service_account_key: ${{ secrets.GCP_SA_KEY }}
-      #     export_default_credentials: true
-      #     credentials_file_path: "gcs.json"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+          credentials_file_path: "gcs.json"
 
-      # - name: Test GCP credentials validity
-      #   run: gcloud info
+      - name: Test GCP credentials validity
+        run: gcloud info
 
-      # - name: "Collect requirements"
-      #   run: |
-      #     pip3 install --upgrade pip --user
-      #     pip3 install --upgrade setuptools
-      #     pip3 install -r hub/requirements/tests.txt
-      #     pip3 install -r hub/requirements/plugins.txt
-      #     pip3 install -r hub/requirements/common.txt
-      #     git clone https://github.com/activeloopai/buH.git
-      #     pip3 install -e buH
-      #     sh buH/buh/scripts/create_all.sh
-      #     pip3 install -e .
-      #   env:
-      #     BUGGER_OFF: "true"
-
-      - name: "Set aliases for Windows"
-        shell: pwsh
+      - name: "Collect requirements"
         run: |
-          Add-Content -Path $profile -Value {Set-Alias -Name python3 -Value python}'
-          Add-Content -Path $profile -Value {Set-Alias -Name pip3 -Value pip}'
-      # - name: "Run tests"
-      #   run: |
-      #     python3 -m pytest hub/auto/tests/test_kaggle.py --cov-report=xml --cov=./ --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
-      #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcs.json
-      #     ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
-      #     ACTIVELOOP_HUB_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
-      #     KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-      #     KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          pip3 install --upgrade pip --user
+          pip3 install --upgrade setuptools
+          pip3 install -r hub/requirements/tests.txt
+          pip3 install -r hub/requirements/plugins.txt
+          pip3 install -r hub/requirements/common.txt
+          git clone https://github.com/activeloopai/buH.git
+          pip3 install -e buH
+          sh buH/buh/scripts/create_all.sh
+          pip3 install -e .
+        env:
+          BUGGER_OFF: "true"
+
+      - name: "Run tests"
+        run: |
+          python3 -m pytest hub/auto/tests/test_kaggle.py --local --s3 --gcs --hub-cloud --kaggle --ignore-glob=buH/*
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcs.json
+          ENV_HUB_DEV_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
+          ACTIVELOOP_HUB_PASSWORD: ${{ secrets.ACTIVELOOP_HUB_PASSWORD }}
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
